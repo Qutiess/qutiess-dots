@@ -8,23 +8,53 @@
 (lambda ()
   (setq gc-cons-threshold (expt 2 23))))			
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(defvar elpaca-installer-version 0.12)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-sources-directory (expand-file-name "sources/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1 :inherit ignore
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca-activate)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-sources-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (<= emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                  ,@(when-let* ((depth (plist-get order :depth)))
+                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                  ,(plist-get order :repo) ,repo))))
+                  ((zerop (call-process "git" nil buffer t "checkout"
+                                        (or (plist-get order :ref) "--"))))
+                  (emacs (concat invocation-directory invocation-name))
+                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                  ((require 'elpaca))
+                  ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
 
-(setq straight-use-package-by-default t)
+(elpaca elpaca-use-package
+  ;; Enable Elpaca support for use-package's :ensure keyword.
+  (elpaca-use-package-mode))
+
+(setq elpaca-lock-file "lock-file.eld")
+
+;; Uncomment for systems which cannot create symlinks:
+;; (elpaca-no-symlink-mode)
 
 (set-face-attribute 'variable-pitch nil :height 240 :width 'normal :family "Comic Relief")
 
@@ -54,16 +84,19 @@
 (add-to-list 'exec-path "/home/linuxbrew/.linuxbrew/bin")
 
 (use-package solarized-theme
+  :ensure t
   :config (load-theme 'solarized-dark t))
 
 (use-package olivetti
+  :ensure t
   :config (setq olivetti-body-width 50))
 
 (use-package org
-  :straight nil
+  :ensure nil
   :hook (org-mode . writer-mode))
 
 (use-package markdown-mode
+  :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :config (setq markdown-command "multimarkdown")
   :hook (markdown-mode . writer-mode)
@@ -71,15 +104,16 @@
          ("C-c C-e" . markdown-do)))
 
 (use-package wc-mode
-  :straight (wc-mode :host github :repo "bnbeckwith/wc-mode")
+  :ensure (wc-mode :host github :repo "bnbeckwith/wc-mode")
   :bind ("\C-cw" . wc-mode))
 
 (use-package marginalia
+  :ensure t
   :config
   (marginalia-mode))
 
 (use-package embark
-
+  :ensure t
   :bind
   (("C-c ." . embark-act)         ;; pick some comfortable binding
    ("C-c ;" . embark-dwim)        ;; good alternative: M-.
@@ -113,18 +147,20 @@
 
 
 (use-package vertico
+  :ensure t
   :init
   (vertico-mode))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
-  :straight nil
+  :ensure nil
   :init
   (savehist-mode))
 
 ;; Emacs minibuffer configurations.
+:ensure t
 (use-package emacs
-  :straight nil
+  :ensure nil
   :custom
   ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
   ;; to switch display modes.
@@ -141,6 +177,7 @@
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
+  :ensure t
   :custom
   ;; Configure a custom style dispatcher (see the Consulut wiki)
   ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
@@ -151,7 +188,7 @@
   (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
 
 (use-package recentf
-  :straight nil
+  :ensure nil
   :init (recentf-mode))
 
 ;; Example configuration for Consult
@@ -255,23 +292,25 @@
 )
 
 (use-package consult-dir
+  :ensure t
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
          ("C-x C-j" . consult-dir-jump-file)))
 
 (use-package which-key
-  :straight nil
+  :ensure nil
   :config (which-key-mode 1))
 
 (use-package eshell
-  :straight nil
+  :ensure nil
   :config (add-to-list 'exec-path "/home/linuxbrew/.linuxbrew/bin"))
 
 (use-package eat
   :hook ((eshell-mode . eat-eshell-mode)))
 
-(use-package magit)
+(use-package magit
+  :ensure t)
 
 (define-minor-mode writer-mode ()
   :keymap nil
@@ -291,3 +330,17 @@
   (setq buffer-face-mode-face '(:family "Bitter" :height 240 :width medium))
   (buffer-face-mode 1)
   (wc-mode 1))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(consult-dir embark magit marginalia markdown-mode olivetti
+		 solarized-theme vertico)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
