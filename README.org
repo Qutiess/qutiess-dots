@@ -1,0 +1,13 @@
+* Requirements
+:PROPERTIES:
+:CUSTOM_ID: requirements
+:END:
+- =git=
+- =stow=
+
+* Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+=git clone https://github.com/Qutiess/qutiess-dots=
+=cd qutiess-dots && stow <package_name_here>=
