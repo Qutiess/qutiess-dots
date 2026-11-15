@@ -49,6 +49,13 @@
 			:protocol https :inherit t :depth treeless
 			:ref
 			"1497b46d6f48da2d884296a1297e5ace1e050eb5"))
+ (eat :source "elpaca-menu-lock-file" :recipe
+      (:package "eat" :repo
+		("https://codeberg.org/akib/emacs-eat" . "eat") :tar
+		"0.9.4" :host nongnu :files ("*" (:exclude ".git"))
+		:source "NonGNU ELPA" :id eat :type git :protocol
+		https :inherit t :depth nil :ref
+		"c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99"))
  (elpaca :source
    "elpaca-menu-lock-file" :recipe
    (:source "Init file" :package "elpaca" :id elpaca :repo

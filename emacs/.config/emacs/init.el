@@ -307,6 +307,7 @@
   :config (add-to-list 'exec-path "/home/linuxbrew/.linuxbrew/bin"))
 
 (use-package eat
+  :ensure t
   :hook ((eshell-mode . eat-eshell-mode)))
 
 (use-package magit
