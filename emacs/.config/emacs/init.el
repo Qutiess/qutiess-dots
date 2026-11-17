@@ -312,6 +312,12 @@
 (use-package magit
   :ensure t)
 
+(use-package eglot
+  :ensure nil
+  :hook (prog-mode . eglot-ensure))
+
+  
+  
 (define-minor-mode writer-mode ()
   :keymap nil
   (setq olivetti-body-width 50)
