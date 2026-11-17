@@ -76,7 +76,7 @@
 (global-display-line-numbers-mode)
 
  ;; Enables appointment notifications
-(setq appt-activate t)
+(appt-activate)
 (setq diary-file "~/org/diary.org")
 (setq org-agenda-files '("~/org/todo.org"))
 (setq calendar-date-style 'iso)
