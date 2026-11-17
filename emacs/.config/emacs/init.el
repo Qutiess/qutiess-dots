@@ -189,8 +189,7 @@
 
 (use-package recentf
   :ensure nil
-  :init (recentf-mode))
-
+  :hook (after-init . recentf-mode))
 ;; Example configuration for Consult
 (use-package consult
   ;; Replace bindings. Lazily loaded by `use-package'.
