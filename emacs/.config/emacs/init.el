@@ -106,7 +106,7 @@
 
 (use-package org
   :ensure nil
-  :hook (org-mode . writer-mode))
+  :hook (org-mode . olivetti-mode))
 
 (use-package marginalia
   :ensure t
@@ -370,21 +370,3 @@
         ("C->" . mc/mark-next-like-this)
         ("C-<" . mc/mark-previous-like-this)
         ("C-c C-<" . mc/mark-all-like-this)))
- 
-(define-minor-mode writer-mode ()
-  :keymap nil
-  (setq olivetti-body-width 50)
-  (olivetti-mode 1)
-  (visual-line-mode 1)
-  (variable-pitch-mode 1))
- 
-(define-minor-mode editor-mode()
-  :keymap nil
-  (setq olivetti-body-width 50)
-  (olivetti-mode 1)
-  (visual-line-mode 1)
-  (flyspell-mode 1)
-  (variable-pitch-mode 0)
-  (setq buffer-face-mode-face '(:family "Bitter" :height 240 :width medium))
-  (buffer-face-mode 1))
- 
