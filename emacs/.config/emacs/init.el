@@ -95,14 +95,6 @@
   :ensure nil
   :hook (org-mode . writer-mode))
 
-(use-package markdown-mode
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)
-  :config (setq markdown-command "multimarkdown")
-  :hook (markdown-mode . writer-mode)
-  :bind (:map markdown-mode-map
-         ("C-c C-e" . markdown-do)))
-
 (use-package wc-mode
   :ensure (wc-mode :host github :repo "bnbeckwith/wc-mode")
   :bind ("\C-cw" . wc-mode))
