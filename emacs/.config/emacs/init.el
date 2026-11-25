@@ -56,11 +56,6 @@
 ;; Uncomment for systems which cannot create symlinks:
 ;; (elpaca-no-symlink-mode)
 
-(set-face-attribute 'variable-pitch nil :height 240 :width 'normal :family "Comic Relief")
-
-(add-to-list 'default-frame-alist
-             '(font . "Maple Mono NF-20:style=Medium"))
-
 ;; disables pesky tool and menu bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -90,6 +85,24 @@
 (use-package olivetti
   :ensure t
   :config (setq olivetti-body-width 50))
+
+(use-package fontaine
+  :ensure t
+  :bind ("C-c f" . fontaine-toggle-preset)
+  :init
+  (setq fontaine-presets '((regular
+     :default-family "Maple Mono NF"
+     :default-weight medium
+     :default-height 180)
+    (writing
+     :default-family "Lexend"
+     :default-weight medium
+     :default-height 180)
+    (editing
+     :default-family "Bitter"
+     :default-weight medium
+     :default-height 180)))
+  (fontaine-mode))
 
 (use-package org
   :ensure nil
