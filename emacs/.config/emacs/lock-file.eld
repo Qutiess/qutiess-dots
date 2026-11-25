@@ -49,12 +49,18 @@
 			:protocol https :inherit t :depth treeless
 			:ref
 			"1497b46d6f48da2d884296a1297e5ace1e050eb5"))
+ (corfu :source "elpaca-menu-lock-file" :recipe
+	(:package "corfu" :repo "minad/corfu" :files
+		  (:defaults "extensions/corfu-*.el") :fetcher github
+		  :source "MELPA" :id corfu :type git :protocol https
+		  :inherit t :depth treeless :ref
+		  "15fed49c97bf6b2436641714ae15bbd2f3e37b77"))
  (eat :source "elpaca-menu-lock-file" :recipe
       (:package "eat" :repo
 		("https://codeberg.org/akib/emacs-eat" . "eat") :tar
 		"0.9.4" :host nongnu :files ("*" (:exclude ".git"))
 		:source "NonGNU ELPA" :id eat :type git :protocol
-		https :inherit t :depth nil :ref
+		https :inherit t :depth treeless :ref
 		"c8d54d649872bfe7b2b9f49ae5c2addbf12d3b99"))
  (elpaca :source
    "elpaca-menu-lock-file" :recipe
@@ -83,6 +89,16 @@
 		   :source "MELPA" :id embark :type git :protocol
 		   https :inherit t :depth treeless :ref
 		   "87e53827cf6659dcc4ac4e54be9af34aeca44f6e"))
+ (fontaine :source "elpaca-menu-lock-file" :recipe
+	   (:package "fontaine" :repo
+		     ("https://github.com/protesilaos/fontaine"
+		      . "fontaine")
+		     :tar "3.1.0" :host gnu :files
+		     ("*"
+		      (:exclude ".git" "COPYING" "doclicense.texi"))
+		     :source "GNU ELPA" :id fontaine :type git
+		     :protocol https :inherit t :depth treeless :ref
+		     "b497b86ff0502715c15757716df75fee01e3cfd4"))
  (llama :source "elpaca-menu-lock-file" :recipe
 	(:package "llama" :fetcher github :repo "tarsius/llama" :files
 		  ("llama.el" ".dir-locals.el") :source "MELPA" :id
@@ -121,22 +137,22 @@
 		       :source "MELPA" :id marginalia :type git
 		       :protocol https :inherit t :depth treeless :ref
 		       "381af583d2530796b9955ff2fe0cba3ad3119943"))
- (markdown-mode :source "elpaca-menu-lock-file" :recipe
-		(:package "markdown-mode" :fetcher github :repo
-			  "jrblevin/markdown-mode" :files
-			  ("*.el" "*.el.in" "dir" "*.info" "*.texi"
-			   "*.texinfo" "doc/dir" "doc/*.info"
-			   "doc/*.texi" "doc/*.texinfo" "lisp/*.el"
-			   "docs/dir" "docs/*.info" "docs/*.texi"
-			   "docs/*.texinfo"
-			   (:exclude ".dir-locals.el" "test.el"
-				     "tests.el" "*-test.el"
-				     "*-tests.el" "LICENSE" "README*"
-				     "*-pkg.el"))
-			  :source "MELPA" :id markdown-mode :type git
-			  :protocol https :inherit t :depth treeless
-			  :ref
-			  "e2e2bc753b4330f85b6ea7e62cd0552e8ea47b76"))
+ (multiple-cursors :source "elpaca-menu-lock-file" :recipe
+		   (:package "multiple-cursors" :fetcher github :repo
+			     "magnars/multiple-cursors.el" :files
+			     ("*.el" "*.el.in" "dir" "*.info" "*.texi"
+			      "*.texinfo" "doc/dir" "doc/*.info"
+			      "doc/*.texi" "doc/*.texinfo" "lisp/*.el"
+			      "docs/dir" "docs/*.info" "docs/*.texi"
+			      "docs/*.texinfo"
+			      (:exclude ".dir-locals.el" "test.el"
+					"tests.el" "*-test.el"
+					"*-tests.el" "LICENSE"
+					"README*" "*-pkg.el"))
+			     :source "MELPA" :id multiple-cursors
+			     :type git :protocol https :inherit t
+			     :depth treeless :ref
+			     "6086e34e86cc9c305c693f440e648588335669c9"))
  (olivetti :source "elpaca-menu-lock-file" :recipe
 	   (:package "olivetti" :fetcher github :repo "rnkn/olivetti"
 		     :files
@@ -186,19 +202,6 @@
 		    github :source "MELPA" :id vertico :type git
 		    :protocol https :inherit t :depth treeless :ref
 		    "c60d80215d19b4b36c0ba49599b6815ed35f2ac1"))
- (wc-mode :source "elpaca-menu-lock-file" :recipe
-	  (:package "wc-mode" :fetcher github :repo
-		    "bnbeckwith/wc-mode" :files
-		    ("*.el" "*.el.in" "dir" "*.info" "*.texi"
-		     "*.texinfo" "doc/dir" "doc/*.info" "doc/*.texi"
-		     "doc/*.texinfo" "lisp/*.el" "docs/dir"
-		     "docs/*.info" "docs/*.texi" "docs/*.texinfo"
-		     (:exclude ".dir-locals.el" "test.el" "tests.el"
-			       "*-test.el" "*-tests.el" "LICENSE"
-			       "README*" "*-pkg.el"))
-		    :source "MELPA" :id wc-mode :host github :type git
-		    :protocol https :inherit t :depth treeless :ref
-		    "63be1433b8a63cdc3239cc751e36360429c42b51"))
  (with-editor :source "elpaca-menu-lock-file"
    :recipe
    (:package "with-editor" :fetcher github :repo "magit/with-editor"
