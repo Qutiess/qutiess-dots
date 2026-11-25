@@ -133,7 +133,6 @@
                  nil
                  (window-parameters (mode-line-format . none)))))
 
-
 (use-package vertico
   :ensure t
   :init
@@ -351,6 +350,7 @@
 (use-package eglot
   :ensure nil
   :hook (prog-mode . eglot-ensure))
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-c m" . mc/edit-lines)
