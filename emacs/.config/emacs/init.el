@@ -84,8 +84,8 @@
 
 (use-package olivetti
   :ensure t
-  :config (setq olivetti-body-width 50))
-
+  :config (setq olivetti-body-width 50)
+  :hook (org-mode . olivetti-mode))
 (use-package fontaine
   :ensure t
   :bind ("C-c f" . fontaine-toggle-preset)
@@ -103,10 +103,6 @@
      :default-weight medium
      :default-height 180)))
   (fontaine-mode))
-
-(use-package org
-  :ensure nil
-  :hook (org-mode . olivetti-mode))
 
 (use-package marginalia
   :ensure t
