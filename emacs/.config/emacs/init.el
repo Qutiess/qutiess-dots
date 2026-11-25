@@ -86,9 +86,11 @@
   :ensure t
   :config (setq olivetti-body-width 50)
   :hook (org-mode . olivetti-mode))
+
 (use-package fontaine
   :ensure t
-  :bind ("C-c f" . fontaine-toggle-preset)
+  :bind (("C-c f" . fontaine-set-preset)
+	 ("C-c F" . fontaine-toggle-preset)))
   :init
   (setq fontaine-presets '((regular
      :default-family "Maple Mono NF"
