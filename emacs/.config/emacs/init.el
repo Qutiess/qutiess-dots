@@ -363,7 +363,7 @@
   (setq olivetti-body-width 50)
   (olivetti-mode 1)
   (visual-line-mode 1)
-  (variable-pitch-mode 1)
+  (variable-pitch-mode 1))
  
 (define-minor-mode editor-mode()
   :keymap nil
@@ -373,5 +373,5 @@
   (flyspell-mode 1)
   (variable-pitch-mode 0)
   (setq buffer-face-mode-face '(:family "Bitter" :height 240 :width medium))
-  (buffer-face-mode 1)
+  (buffer-face-mode 1))
  
