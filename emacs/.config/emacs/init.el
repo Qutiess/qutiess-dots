@@ -102,7 +102,8 @@
      :default-family "Bitter"
      :default-weight medium
      :default-height 180)))
-  (fontaine-mode))
+  (fontaine-mode)
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular)))
 
 (use-package marginalia
   :ensure t
