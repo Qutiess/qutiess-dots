@@ -90,7 +90,7 @@
 (use-package fontaine
   :ensure t
   :bind (("C-c f" . fontaine-set-preset)
-	 ("C-c F" . fontaine-toggle-preset)))
+	 ("C-c F" . fontaine-toggle-preset))
   :init
   (setq fontaine-presets '((regular
      :default-family "Maple Mono NF"
